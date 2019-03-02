@@ -22,17 +22,22 @@ function getbill(req, res, next) {
 //添加账单     
 function addbill(req, res, next) {
     if (!req.body.uID || !req.body.time || !req.body.money || !req.body.cName ||!req.body.type) {
-        Mongo.insert(batabaseName, "bills", req.body, function (result) {
-            if (!result) {
-                res.send({
-                    code: 0,
-                    mes: "error"
+        res.send({
+            code: 0,
+            msg:"参数丢失"
+        })
+    } else {
+        Mongo.insert(batabaseName,"bill",res.body,function(result){
+            if(!result){
+               res.send({
+                   code:0,
+                   mes:"error"
                 })
-            } else {
+            }else{
                 res.send({
-                    code: 1,
-                    mes: "success",
-                    data: result
+                   code:1,
+                   mes:"success",
+                   data:result
                 })
             }
         })
@@ -83,7 +88,14 @@ function findbills(req, res, next) {
 //删除账单接口
 function removebill(req, res, next) {
     var data = req.body
-    Mongo.remove(batabaseName,collcationName,data,function(result){
+    if (!data.id) {
+        res.send({
+            code: 0,
+            msg:"参数丢失"
+        })
+        return
+    }
+    Mongo.remove(batabaseName,collcationName,{_id:data.id},function(result){
         if(!result){
            res.send({
                code:0,

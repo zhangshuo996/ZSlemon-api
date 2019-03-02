@@ -3,7 +3,7 @@ var Mongo = require("mongodb-curd");
 var batabaseName = "lemon",
     collcationName = "custom";
 
-//添加自定义类型从custom获取到数据
+//获取自定义类型从custom获取到数据
 function getCustom(req,res,next) { 
     Mongo.find(batabaseName,collcationName,{},function(result){
         if(!result){
